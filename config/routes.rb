@@ -53,4 +53,13 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
+  resource :session, only: [:create, :destroy]
+  resource :profile, only: [:show, :create, :update, :destroy] do
+    get 'matches'
+    get 'friends'
+    post 'online'
+    post 'offline'
+    resources :friends, only: [:new, :destroy]
+  end
 end
