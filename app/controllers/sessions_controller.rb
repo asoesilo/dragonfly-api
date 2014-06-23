@@ -2,9 +2,9 @@ class SessionsController < ApplicationController
   skip_before_action :authenticate_user, only: [:create, :destroy]
 
   def create
-    profile = Profile.find_by(email: params[:email])
-    if profile && profile.authenticate(params[:password])
-      session[:user_id] = profile.id
+    user = User.find_by(email: params[:email])
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
       head :ok
     else
       raise Exceptions::AuthenticationError.new, 'invalid username/password combination'

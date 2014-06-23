@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :user_language do
-    association :profile
+    association :user
     association :language
     association :proficiency
     association :action

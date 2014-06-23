@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :profile do
+  factory :user do
     email { Faker::Internet.safe_email }
     password { Faker::Internet.password }
     firstname { Faker::Name.first_name }
@@ -9,7 +9,7 @@ FactoryGirl.define do
     gender { Gender.find_by(description: 'Male') }
   end
 
-  factory :profile2, class: Profile do
+  factory :user2, class: User do
     email { Faker::Internet.safe_email }
     password { Faker::Internet.password }
     firstname { Faker::Name.first_name }
