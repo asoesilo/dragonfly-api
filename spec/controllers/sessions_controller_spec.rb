@@ -30,7 +30,7 @@ describe SessionsController do
         post :create, email: nil, password: @user.password
       end
 
-      it "receives HTTP status UNPROCESSABLE ENTITY(400)" do
+      it "receives HTTP status BAD REQUEST(400)" do
         expect(response.status).to eq 400
       end
 
@@ -51,7 +51,7 @@ describe SessionsController do
         post :create, email: @user.email, password: nil
       end
 
-      it "receives HTTP status UNPROCESSABLE ENTITY(400)" do
+      it "receives HTTP status BAD REQUEST(400)" do
         expect(response.status).to eq 400
       end
 
