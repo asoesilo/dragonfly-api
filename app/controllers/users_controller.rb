@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     if user.save
       render json: user, status: :ok
     else
-      render json: { errors: @user.errors.full_messages }, status: :bad_request
+      render json: { errors: user.errors.full_messages }, status: :bad_request
     end
   end
 
