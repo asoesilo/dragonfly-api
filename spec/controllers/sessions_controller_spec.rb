@@ -36,7 +36,9 @@ describe SessionsController do
 
       it "receives error message" do
         body = JSON.parse(response.body)
-        expect(body["error"]).to eq AUTHENTICATION_ERROR_MESSAGE
+        errors = body["errors"]
+        expect(errors.count).to eq 1
+        expect(errors[0]).to eq AUTHENTICATION_ERROR_MESSAGE
       end
 
       it "do not save session" do
@@ -55,7 +57,9 @@ describe SessionsController do
 
       it "receives error" do
         body = JSON.parse(response.body)
-        expect(body["error"]).to eq AUTHENTICATION_ERROR_MESSAGE
+        errors = body["errors"]
+        expect(errors.count).to eq 1
+        expect(errors[0]).to eq AUTHENTICATION_ERROR_MESSAGE
       end
 
       it "do not save session" do

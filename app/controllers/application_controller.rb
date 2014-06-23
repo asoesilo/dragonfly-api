@@ -14,11 +14,11 @@ class ApplicationController < ActionController::Base
   private
   def authenticate_user
     unless current_user
-      render json: { error: "user needs to be logged in" }, status: :forbidden
+      render json: { errors: ["user needs to be logged in"] }, status: :forbidden
     end
   end
 
   def application_error_handling(error)
-    render json: { errors: error.message }, status: :bad_request
+    render json: { errors: [error.message] }, status: :bad_request
   end
 end
