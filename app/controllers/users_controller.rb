@@ -16,7 +16,9 @@ class UsersController < ApplicationController
   end
 
   def update
+    # binding.pry
     if current_user.update_attributes(user_params)
+      # binding.pry
       head :ok
     else
       render json: { errors: current_user.errors.full_messages }, status: :bad_request

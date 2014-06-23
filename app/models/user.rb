@@ -16,6 +16,10 @@ class User < ActiveRecord::Base
     # TODO:
   end
 
+  def birthday
+    super.strftime("%F")
+  end
+
   def as_json(options)
     {
       id: id,
