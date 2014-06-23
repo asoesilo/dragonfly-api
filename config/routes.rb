@@ -55,7 +55,7 @@ Rails.application.routes.draw do
   #   end
 
   resource :session, only: [:create, :destroy]
-  resource :user, only: [:create, :update, :destroy] do
+  resource :profile, controller: :users, only: [:create, :update, :destroy] do
     get 'details'
     get 'matches'
     get 'friends'
