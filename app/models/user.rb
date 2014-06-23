@@ -10,14 +10,12 @@ class User < ActiveRecord::Base
 
   def teaching_languages
     # TODO:
+    languages.find_by(action: Action.TEACH)
   end
 
   def learning_languages
     # TODO:
-  end
-
-  def birthday
-    super.strftime("%F")
+    languages.find_by(action: Action.LEARN)
   end
 
   def as_json(options)
@@ -26,7 +24,7 @@ class User < ActiveRecord::Base
       email: email,
       firstname: firstname,
       lastname: lastname,
-      birthday: birthday,
+      birthday: birthday.strftime("%F"),
       gender: gender.description,
       about: about,
       is_online: is_online

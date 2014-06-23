@@ -159,7 +159,7 @@ describe UsersController do
         expect(user["email"]).to eq current_user.email
         expect(user["firstname"]).to eq current_user.firstname
         expect(user["lastname"]).to eq current_user.lastname
-        expect(user["birthday"]).to eq current_user.birthday
+        expect(user["birthday"]).to eq current_user.birthday.strftime("%F")
         expect(user["gender"]).to eq current_user.gender.description
         expect(user["about"]).to eq current_user.about
         expect(user["is_online"]).to eq current_user.is_online
@@ -248,7 +248,7 @@ describe UsersController do
 
         it "birthday has new value" do
           current_user.reload
-          expect(current_user.birthday).to eq @birthday.strftime("%F")
+          expect(current_user.birthday).to eq @birthday
         end
       end
 
