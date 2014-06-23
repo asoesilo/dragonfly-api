@@ -2,7 +2,7 @@ class ProfilesController < ApplicationController
   def create
   end
 
-  def show
+  def details
   end
 
   def update
