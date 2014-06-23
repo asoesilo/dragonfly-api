@@ -10,7 +10,7 @@ module UserAccountHelpers
     end
 
     def logged_in_user
-      current_user { create(:profile) }
+      current_user { create(:user) }
     end
   end
 

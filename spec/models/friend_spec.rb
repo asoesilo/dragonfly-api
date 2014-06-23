@@ -7,8 +7,8 @@ describe Friend do
     end
 
     it "not valid if friend is with self" do
-      profile = build(:profile)
-      expect(build(:friend, profile1: profile, profile2: profile)).to have(1).errors_on(:profile2)
+      user = build(:user)
+      expect(build(:friend, user1: user, user2: user)).to have(1).errors_on(:user2)
     end
   end
 end

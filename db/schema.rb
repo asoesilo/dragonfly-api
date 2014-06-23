@@ -21,8 +21,8 @@ ActiveRecord::Schema.define(version: 20140620222408) do
   end
 
   create_table "friends", force: true do |t|
-    t.integer  "profile1_id"
-    t.integer  "profile2_id"
+    t.integer  "user1_id"
+    t.integer  "user2_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -39,7 +39,17 @@ ActiveRecord::Schema.define(version: 20140620222408) do
     t.string "name"
   end
 
-  create_table "profiles", force: true do |t|
+  create_table "user_languages", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "language_id"
+    t.integer  "proficiency_id"
+    t.integer  "action_id"
+    t.date     "start_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: true do |t|
     t.string   "email"
     t.string   "password"
     t.string   "firstname"
@@ -49,16 +59,6 @@ ActiveRecord::Schema.define(version: 20140620222408) do
     t.text     "about"
     t.boolean  "is_online"
     t.string   "password_digest"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "user_languages", force: true do |t|
-    t.integer  "profile_id"
-    t.integer  "language_id"
-    t.integer  "proficiency_id"
-    t.integer  "action_id"
-    t.date     "start_date"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

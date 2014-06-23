@@ -1,4 +1,4 @@
-class ProfilesController < ApplicationController
+class UsersController < ApplicationController
   def create
   end
 

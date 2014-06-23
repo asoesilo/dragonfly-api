@@ -7,7 +7,7 @@ describe SessionsController do
     logged_out_user
 
     before :each do
-      @user = create(:profile)
+      @user = create(:user)
       assert session[:user_id].nil?, "should not be logged in prior to test execution"
     end
 
