@@ -11,6 +11,14 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
 
+  def log_in(user)
+    session[:user_id] = user.id
+  end
+
+  def log_out
+    reset_session
+  end
+
   private
   def authenticate_user
     unless current_user

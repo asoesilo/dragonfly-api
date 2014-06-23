@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
+      log_in(user)
       head :ok
     else
       raise Exceptions::AuthenticationError.new, 'invalid username/password combination'
@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    reset_session
+    log_out
     head :ok
   end
 end
