@@ -2,10 +2,10 @@ class UsersController < ApplicationController
   skip_before_action :authenticate_user, only: [:create]
 
   def create
-    @user = User.new(user_params)
-    @user.is_online = true
-    if @user.save
-      render json: @user, status: :ok
+    user = User.new(user_params)
+    user.is_online = true
+    if user.save
+      render json: user, status: :ok
     else
       render json: { errors: @user.errors.full_messages }, status: :bad_request
     end
@@ -47,7 +47,8 @@ class UsersController < ApplicationController
 
   private
   def user_params
-    params(:user).permit(:email, :password, :firstname, :lastname, :birthday, :gender, :about)
+    # TODO: add teaching and learning languages association
+    params.require(:user).permit(:email, :password, :firstname, :lastname, :birthday, :gender_id, :about)
   end
 
   def send_offline_notice

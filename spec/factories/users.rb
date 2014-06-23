@@ -6,7 +6,7 @@ FactoryGirl.define do
     lastname { Faker::Name.last_name }
     birthday { 20.years.ago }
     about { Faker::Lorem.paragraph }
-    gender { Gender.find_by(description: 'Male') }
+    association :gender
   end
 
   factory :user2, class: User do
@@ -16,6 +16,6 @@ FactoryGirl.define do
     lastname { Faker::Name.last_name }
     birthday { 20.years.ago }
     about { Faker::Lorem.paragraph }
-    gender { Gender.find_by(description: 'Female') }
+    association :gender
   end
 end
