@@ -35,6 +35,8 @@ gem 'bcrypt', '~> 3.1.7'
 # An email validator for Rails 3 and 4.
 gem 'email_validator'
 
+gem 'rack-cors', :require => 'rack/cors'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

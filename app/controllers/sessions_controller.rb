@@ -4,8 +4,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
-      log_in(user)
-      head :ok
+      render json: user, status: :ok
     else
       raise Exceptions::AuthenticationError.new, 'invalid username/password combination'
     end
