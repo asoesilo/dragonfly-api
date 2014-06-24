@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+  before_action :set_headers
   before_action :authenticate_user
 
   rescue_from Exceptions::ApplicationError, with: :application_error_handling
@@ -28,5 +29,11 @@ class ApplicationController < ActionController::Base
 
   def application_error_handling(error)
     render json: { errors: [error.message] }, status: :bad_request
+  end
+
+  def set_headers
+    headers["Access-Control-Allow-Origin"] = ENV["CLIENT_PATH"]
+    headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, HEAD"
+    headers["Access-Control-Max-Age"] = "86400"
   end
 end
