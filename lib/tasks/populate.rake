@@ -30,6 +30,14 @@ namespace :db do
       Action.find(rand(Action.count) + 1)
     end
 
+    def get_next_user(user)
+      next_user = User.where(["id > :user_id", {user_id: user.id}]).first
+      if next_user.nil?
+        next_user = User.where(["id < :user_id", {user_id: user.id}]).first
+      end
+      next_user
+    end
+
     20.times do
       user = User.new
       user.firstname = Faker::Name.first_name
@@ -51,6 +59,18 @@ namespace :db do
           proficiency: proficiency,
           action: action,
           start_date: start_date
+          )
+      end
+    end
+
+    User.all.each do |current_user|
+      next_user = current_user
+      3.times do
+        next_user = get_next_user(next_user)
+        break unless next_user
+        Friendship.create(
+          user1: current_user,
+          user2: next_user
           )
       end
     end
