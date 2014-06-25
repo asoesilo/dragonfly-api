@@ -1,4 +1,4 @@
-class Friend < ActiveRecord::Base
+class Friendship < ActiveRecord::Base
   belongs_to :user1, class_name: :User, foreign_key: :user1_id
   belongs_to :user2, class_name: :User, foreign_key: :user2_id
 
@@ -9,7 +9,7 @@ class Friend < ActiveRecord::Base
 
   class << self
     def find_friendship(user1, user2)
-      Friend.where(["(user1_id = :user_id AND user2_id = :other_user_id) OR (user1_id = :other_user_id AND user2_id = :user_id)", {user_id: user1.id, other_user_id: user2.id}]).first
+      Friendship.where(["(user1_id = :user_id AND user2_id = :other_user_id) OR (user1_id = :other_user_id AND user2_id = :user_id)", {user_id: user1.id, other_user_id: user2.id}]).first
     end
   end
 
@@ -21,7 +21,7 @@ class Friend < ActiveRecord::Base
   end
 
   def no_duplicate
-    if Friend.find_friendship(user1, user2)
+    if Friendship.find_friendship(user1, user2)
       errors.add(:user2, "friendship already exist")
     end
   end

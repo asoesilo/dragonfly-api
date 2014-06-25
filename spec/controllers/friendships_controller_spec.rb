@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe FriendsController do
+describe FriendshipsController do
 
   let (:user) { create(:user) }
 
@@ -15,7 +15,7 @@ describe FriendsController do
       it "saves to database" do
         expect do
           post :create, id: user2.id
-        end.to change(Friend, :count).by(1)
+        end.to change(Friendship, :count).by(1)
       end
 
       it "returns HTTP status OK(200)" do
@@ -28,7 +28,7 @@ describe FriendsController do
       it "does not save to database" do
         expect do
           post :create, id: user.id
-        end.to_not change(Friend, :count)
+        end.to_not change(Friendship, :count)
       end
 
       it "returns HTTP status BAD REQUEST(400)" do
@@ -40,13 +40,13 @@ describe FriendsController do
 
   describe "DELETE #destroy" do
     context "friendship exists" do
-      let (:friendship) { create(:friend, user1: user) }
+      let (:friendship) { create(:friendship, user1: user) }
 
       it "destroy friendship from the database" do
         friendship # call to create friendship
         expect do
           delete :destroy, id: friendship.user2.id
-        end.to change(Friend, :count).by(-1)
+        end.to change(Friendship, :count).by(-1)
       end
 
       it "returns HTTP status OK(200)" do
@@ -56,13 +56,13 @@ describe FriendsController do
     end
 
     context "friendship does not exist" do
-      let (:friendship) { create(:friend, user1: user) }
+      let (:friendship) { create(:friendship, user1: user) }
 
       it "destroy friendship from the database" do
         friendship # call to create friendship
         expect do
           delete :destroy, id: friendship.user1.id
-        end.to_not change(Friend, :count)
+        end.to_not change(Friendship, :count)
       end
 
       it "returns HTTP status OK(200)" do

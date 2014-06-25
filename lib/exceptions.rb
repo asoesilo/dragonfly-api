@@ -9,6 +9,6 @@ module Exceptions
   class InvalidParametersError < ApplicationError; end
   class InvalidUserError < ApplicationError; end
   class InvalidUserLanguageError < ApplicationError; end
-  class InvalidFriendCreationError < ApplicationError; end
-  class InvalidFriendDestroyError < ApplicationError; end
+  class InvalidFriendshipCreationError < ApplicationError; end
+  class InvalidFriendshipDestroyError < ApplicationError; end
 end

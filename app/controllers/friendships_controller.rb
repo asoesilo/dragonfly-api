@@ -1,27 +1,27 @@
-class FriendsController < ApplicationController
+class FriendshipsController < ApplicationController
   before_action :validate_parameters, only: [:create, :destroy]
 
   def create
     user2 = User.find(params[:id])
 
-    friend = Friend.new(
+    friendship = Friendship.new(
       user1: current_user,
       user2: user2
       )
 
-    if friend.save
+    if friendship.save
       head :ok
     else
-      raise Exceptions::InvalidFriendCreationError.new(friend.errors.full_messages)
+      raise Exceptions::InvalidFriendshipCreationError.new(friendship.errors.full_messages)
     end
   end
 
   def destroy
     friend = User.find(params[:id])
-    friend_relation = Friend.find_friendship(current_user, friend)
+    friendship = Friendship.find_friendship(current_user, friend)
 
-    if friend_relation
-      raise Exceptions::InvalidFriendDestroyError.new(friend_relation.errors.full_messages) unless friend_relation.destroy
+    if friendship
+      raise Exceptions::InvalidFriendshipDestroyError.new(friendship.errors.full_messages) unless friendship.destroy
     end
 
     head :ok
