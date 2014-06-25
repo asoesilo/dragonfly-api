@@ -4,30 +4,30 @@ describe SessionsController do
   describe "POST #create" do
     AUTHENTICATION_ERROR_MESSAGE = "invalid username/password combination"
 
-    logged_out_user
-
-    before :each do
-      @user = create(:user)
-      assert session[:user_id].nil?, "should not be logged in prior to test execution"
-    end
+    let (:user) { create(:user) }
 
     context "valid registered user" do
       before :each do
-        post :create, email: @user.email, password: @user.password
+        post :create, email: user.email, password: user.password
       end
 
       it "returns HTTP status OK(200)" do
         expect(response.status).to eq 200
       end
 
-      it "saves session" do
-        expect(session[:user_id]).to eq @user.id
+      it "returns user ID" do
+        expect(json["id"]).to eq user.id
       end
+
+      # TODO:
+      # it "saves session" do
+      #   expect(session[:user_id]).to eq @user.id
+      # end
     end
 
     context "invalid email" do
       before :each do
-        post :create, email: nil, password: @user.password
+        post :create, email: nil, password: user.password
       end
 
       it "receives HTTP status BAD REQUEST(400)" do
@@ -35,20 +35,20 @@ describe SessionsController do
       end
 
       it "receives error message" do
-        body = JSON.parse(response.body)
-        errors = body["errors"]
+        errors = json["errors"]
         expect(errors.count).to eq 1
         expect(errors[0]).to eq AUTHENTICATION_ERROR_MESSAGE
       end
 
-      it "do not save session" do
-        expect(session[:user_id]).to be_nil
-      end
+      # TODO:
+      # it "do not save session" do
+      #   expect(session[:user_id]).to be_nil
+      # end
     end
 
     context "invalid password" do
       before :each do
-        post :create, email: @user.email, password: nil
+        post :create, email: user.email, password: nil
       end
 
       it "receives HTTP status BAD REQUEST(400)" do
@@ -56,23 +56,24 @@ describe SessionsController do
       end
 
       it "receives error" do
-        body = JSON.parse(response.body)
-        errors = body["errors"]
+        errors = json["errors"]
         expect(errors.count).to eq 1
         expect(errors[0]).to eq AUTHENTICATION_ERROR_MESSAGE
       end
 
-      it "do not save session" do
-        expect(session[:user_id]).to be_nil
-      end
+      # TODO:
+      # it "do not save session" do
+      #   expect(session[:user_id]).to be_nil
+      # end
     end
   end
 
   describe "DELETE #destroy" do
-    logged_in_user
+
+    let (:user) { create(:user) }
 
     before :each do
-      assert !session[:user_id].nil?, "should be logged in prior to test execution"
+      auth_with_user(user)
       delete :destroy
     end
 
@@ -80,8 +81,9 @@ describe SessionsController do
       expect(response.status).to eq 200
     end
 
-    it "session is deleted" do
-      expect(session[:user_id]).to be_nil
-    end
+    # TODO:
+    # it "session is deleted" do
+    #   expect(session[:user_id]).to be_nil
+    # end
   end
 end

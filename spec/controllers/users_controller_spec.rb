@@ -3,25 +3,25 @@ require 'spec_helper'
 describe UsersController do
   describe "POST #create" do
     context "valid user" do
+
+      let (:gender) { create(:gender) }
+
       before :each do
-        @gender = create(:gender)
-        post :create, user: attributes_for(:user, gender_id: @gender.id)
+        post :create, user: attributes_for(:user, gender_id: gender.id)
       end
 
       it "save user to database" do
         expect do
-          post :create, user: attributes_for(:user, gender_id: @gender.id)
+          post :create, user: attributes_for(:user, gender_id: gender.id)
         end.to change(User, :count).by(1)
       end
 
       it "returns user ID" do
-        user = JSON.parse(response.body)
-        expect(user["id"]).to be
+        expect(json["id"]).to be
       end
 
       it "set user to be online" do
-        user = JSON.parse(response.body)
-        expect(user["is_online"]).to be_true
+        expect(json["is_online"]).to be_true
       end
 
       it "returns HTTP status OK(200)" do
@@ -31,22 +31,23 @@ describe UsersController do
 
     context "invalid user" do
       context "invalid email" do
+
+        let (:gender) { create(:gender) }
+
         before :each do
-          @gender = create(:gender)
-          post :create, user: attributes_for(:user, gender_id: @gender.id, email: nil)
+          post :create, user: attributes_for(:user, gender_id: gender.id, email: nil)
         end
 
         it "does not save user to database" do
           expect do
-            post :create, user: attributes_for(:user, gender_id: @gender.id, email: nil)
+            post :create, user: attributes_for(:user, gender_id: gender.id, email: nil)
           end.to_not change(User, :count)
         end
 
         it "returns error messages" do
-          body = JSON.parse(response.body)
-          expect(body["errors"].count).to eq 2
-          expect(body["errors"][0].downcase).to include("email")
-          expect(body["errors"][1].downcase).to include("email")
+          expect(json["errors"].count).to eq 2
+          expect(json["errors"][0].downcase).to include("email")
+          expect(json["errors"][1].downcase).to include("email")
         end
 
         it "returns HTTP status BAD REQUEST(400)" do
@@ -55,21 +56,22 @@ describe UsersController do
       end
 
       context "invalid password" do
+
+        let (:gender) { create(:gender) }
+
         before :each do
-          @gender = create(:gender)
-          post :create, user: attributes_for(:user, gender_id: @gender.id, password: nil)
+          post :create, user: attributes_for(:user, gender_id: gender.id, password: nil)
         end
 
         it "does not save user to database" do
           expect do
-            post :create, user: attributes_for(:user, gender_id: @gender.id, password: nil)
+            post :create, user: attributes_for(:user, gender_id: gender.id, password: nil)
           end.to_not change(User, :count)
         end
 
         it "returns error messages" do
-          body = JSON.parse(response.body)
-          expect(body["errors"].count).to eq 1
-          expect(body["errors"][0].downcase).to include("password")
+          expect(json["errors"].count).to eq 1
+          expect(json["errors"][0].downcase).to include("password")
         end
 
         it "returns HTTP status BAD REQUEST(400)" do
@@ -78,14 +80,16 @@ describe UsersController do
       end
 
       context "invalid firstname" do
+
+        let (:gender) { create(:gender) }
+
         before :each do
-          @gender = create(:gender)
-          post :create, user: attributes_for(:user, gender_id: @gender.id, firstname: nil)
+          post :create, user: attributes_for(:user, gender_id: gender.id, firstname: nil)
         end
 
         it "does not save user to database" do
           expect do
-            post :create, user: attributes_for(:user, gender_id: @gender.id, firstname: nil)
+            post :create, user: attributes_for(:user, gender_id: gender.id, firstname: nil)
           end.to_not change(User, :count)
         end
 
@@ -94,28 +98,28 @@ describe UsersController do
         end
 
         it "returns error messages" do
-          body = JSON.parse(response.body)
-          expect(body["errors"].count).to eq 1
-          expect(body["errors"][0].downcase).to include("firstname")
+          expect(json["errors"].count).to eq 1
+          expect(json["errors"][0].downcase).to include("firstname")
         end
       end
 
       context "invalid lastname" do
+
+        let (:gender) { create(:gender) }
+
         before :each do
-          @gender = create(:gender)
-          post :create, user: attributes_for(:user, gender_id: @gender.id, lastname: nil)
+          post :create, user: attributes_for(:user, gender_id: gender.id, lastname: nil)
         end
 
         it "does not save user to database" do
           expect do
-            post :create, user: attributes_for(:user, gender_id: @gender.id, lastname: nil)
+            post :create, user: attributes_for(:user, gender_id: gender.id, lastname: nil)
           end.to_not change(User, :count)
         end
 
         it "returns error messages" do
-          body = JSON.parse(response.body)
-          expect(body["errors"].count).to eq 1
-          expect(body["errors"][0].downcase).to include("lastname")
+          expect(json["errors"].count).to eq 1
+          expect(json["errors"][0].downcase).to include("lastname")
         end
 
         it "returns HTTP status BAD REQUEST(400)" do
@@ -126,8 +130,7 @@ describe UsersController do
   end
 
   describe "GET #details" do
-    context "not allowed if not logged in" do
-      logged_out_user
+    context "not allowed if does not provide access token" do
 
       before :each do
         get :details
@@ -143,10 +146,12 @@ describe UsersController do
       end
     end
 
-    context "user is logged in" do
-      logged_in_user
+    context "provides valid access token" do
+
+      let (:user) { create(:user) }
 
       before :each do
+        auth_with_user(user)
         get :details
       end
 
@@ -155,21 +160,19 @@ describe UsersController do
       end
 
       it "returns same information as current user" do
-        user = JSON.parse(response.body)
-        expect(user["email"]).to eq current_user.email
-        expect(user["firstname"]).to eq current_user.firstname
-        expect(user["lastname"]).to eq current_user.lastname
-        expect(user["birthday"]).to eq current_user.birthday
-        expect(user["gender"]).to eq current_user.gender.description
-        expect(user["about"]).to eq current_user.about
-        expect(user["is_online"]).to eq current_user.is_online
+        expect(json["email"]).to eq user.email
+        expect(json["firstname"]).to eq user.firstname
+        expect(json["lastname"]).to eq user.lastname
+        expect(json["birthday"]).to eq user.birthday
+        expect(json["gender"]).to eq user.gender.description
+        expect(json["about"]).to eq user.about
+        expect(json["is_online"]).to eq user.is_online
       end
     end
   end
 
   describe "PUT #update" do
-    context "not allowed if not logged in" do
-      logged_out_user
+    context "not allowed if does not provide access token" do
 
       before :each do
         put :update
@@ -185,8 +188,13 @@ describe UsersController do
       end
     end
 
-    context "user is logged in" do
-      logged_in_user
+    context "provides access token" do
+
+      let (:user) { create(:user) }
+
+      before :each do
+        auth_with_user(user)
+      end
 
       context "can modify email" do
         before :each do
@@ -199,8 +207,8 @@ describe UsersController do
         end
 
         it "email has new value" do
-          current_user.reload
-          expect(current_user.email).to eq @new_email
+          user.reload
+          expect(user.email).to eq @new_email
         end
       end
 
@@ -215,8 +223,8 @@ describe UsersController do
         end
 
         it "firstname has new value" do
-          current_user.reload
-          expect(current_user.firstname).to eq @firstname
+          user.reload
+          expect(user.firstname).to eq @firstname
         end
       end
 
@@ -231,8 +239,8 @@ describe UsersController do
         end
 
         it "lastname has new value" do
-          current_user.reload
-          expect(current_user.lastname).to eq @lastname
+          user.reload
+          expect(user.lastname).to eq @lastname
         end
       end
 
@@ -247,8 +255,8 @@ describe UsersController do
         end
 
         it "birthday has new value" do
-          current_user.reload
-          expect(current_user.birthday).to eq @birthday.strftime("%F")
+          user.reload
+          expect(user.birthday).to eq @birthday.strftime("%F")
         end
       end
 
@@ -263,8 +271,8 @@ describe UsersController do
         end
 
         it "gender has new value" do
-          current_user.reload
-          expect(current_user.gender).to eq @gender
+          user.reload
+          expect(user.gender).to eq @gender
         end
       end
 
@@ -279,17 +287,17 @@ describe UsersController do
         end
 
         it "about has new value" do
-          current_user.reload
-          expect(current_user.about).to eq @about
+          user.reload
+          expect(user.about).to eq @about
         end
       end
 
       context "cannot modify is_online" do
         it "does not change is_online" do
           expect do
-            put :update, user: attributes_for(:user, is_online: !current_user.is_online)
-            current_user.reload
-          end.to_not change(current_user, :is_online)
+            put :update, user: attributes_for(:user, is_online: !user.is_online)
+            user.reload
+          end.to_not change(user, :is_online)
         end
       end
     end
@@ -297,7 +305,6 @@ describe UsersController do
 
   describe "DELETE #destroy" do
     context "not allowed if not logged in" do
-      logged_out_user
 
       before :each do
         delete :destroy
@@ -314,7 +321,12 @@ describe UsersController do
     end
 
     context "user is logged in" do
-      logged_in_user
+
+      let (:user) { create(:user) }
+
+      before :each do
+        auth_with_user(user)
+      end
 
       it "removes user from database" do
         expect do
@@ -322,10 +334,11 @@ describe UsersController do
         end.to change(User, :count).by(-1)
       end
 
-      it "logs out user" do
-        delete :destroy
-        expect(session[:user_id]).to eq nil
-      end
+      # TODO
+      # it "logs out user" do
+      #   delete :destroy
+      #   expect(session[:user_id]).to eq nil
+      # end
 
       it "returns HTTP status OK(200)" do
         delete :destroy

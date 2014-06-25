@@ -18,6 +18,9 @@ RSpec.configure do |config|
   config.include UserAccountHelpers,         type: :controller
   config.extend  UserAccountHelpers::Macros, type: :controller
 
+  config.include Requests::JsonHelpers,      type: :controller
+  config.include AuthHelpers,                type: :controller
+
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:

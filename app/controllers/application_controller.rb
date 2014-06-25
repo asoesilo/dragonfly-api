@@ -12,11 +12,11 @@ class ApplicationController < ActionController::Base
   end
 
   def log_in(user)
-    session[:user_id] = user.id
+    # TODO
   end
 
   def log_out
-    reset_session
+    # TODO
   end
 
   private
