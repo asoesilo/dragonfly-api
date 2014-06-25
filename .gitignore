@@ -20,3 +20,9 @@
 
 # Ignore env file
 .env
+
+# Ignore er_params
+er_params
+
+# Ignore public system generated files
+public/system/

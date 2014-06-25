@@ -60,7 +60,7 @@ class UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:email, :password, :firstname, :lastname, :birthday, :gender_id, :about)
+    params.require(:user).permit(:email, :password, :firstname, :lastname, :birthday, :gender_id, :about, :avatar)
   end
 
   def languages_params

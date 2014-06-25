@@ -11,12 +11,14 @@ describe UsersController do
       let (:start_date) { 20.days.ago(Date.today) }
 
       before :each do
-        post :create, { user: attributes_for(:user, gender_id: gender.id), languages: [ {language_id: language.id, proficiency_id: proficiency.id, action_id: action.id, start_date: start_date} ] }
+        image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
+        post :create, { user: attributes_for(:user, gender_id: gender.id, avatar: image), languages: [ {language_id: language.id, proficiency_id: proficiency.id, action_id: action.id, start_date: start_date} ] }
       end
 
       it "save user to database" do
         expect do
-          post :create, user: attributes_for(:user, gender_id: gender.id)
+          image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
+          post :create, user: attributes_for(:user, gender_id: gender.id, avatar: image)
         end.to change(User, :count).by(1)
       end
 
@@ -39,12 +41,14 @@ describe UsersController do
         let (:gender) { create(:gender) }
 
         before :each do
-          post :create, user: attributes_for(:user, gender_id: gender.id, email: nil)
+          image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
+          post :create, user: attributes_for(:user, gender_id: gender.id, email: nil, avatar: image)
         end
 
         it "does not save user to database" do
           expect do
-            post :create, user: attributes_for(:user, gender_id: gender.id, email: nil)
+            image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
+            post :create, user: attributes_for(:user, gender_id: gender.id, email: nil, avatar: image)
           end.to_not change(User, :count)
         end
 
@@ -64,12 +68,14 @@ describe UsersController do
         let (:gender) { create(:gender) }
 
         before :each do
-          post :create, user: attributes_for(:user, gender_id: gender.id, password: nil)
+          image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
+          post :create, user: attributes_for(:user, gender_id: gender.id, password: nil, avatar: image)
         end
 
         it "does not save user to database" do
           expect do
-            post :create, user: attributes_for(:user, gender_id: gender.id, password: nil)
+            image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
+            post :create, user: attributes_for(:user, gender_id: gender.id, password: nil, avatar: image)
           end.to_not change(User, :count)
         end
 
@@ -88,12 +94,14 @@ describe UsersController do
         let (:gender) { create(:gender) }
 
         before :each do
-          post :create, user: attributes_for(:user, gender_id: gender.id, firstname: nil)
+          image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
+          post :create, user: attributes_for(:user, gender_id: gender.id, firstname: nil, avatar: image)
         end
 
         it "does not save user to database" do
           expect do
-            post :create, user: attributes_for(:user, gender_id: gender.id, firstname: nil)
+            image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
+            post :create, user: attributes_for(:user, gender_id: gender.id, firstname: nil, avatar: image)
           end.to_not change(User, :count)
         end
 
@@ -112,12 +120,14 @@ describe UsersController do
         let (:gender) { create(:gender) }
 
         before :each do
-          post :create, user: attributes_for(:user, gender_id: gender.id, lastname: nil)
+          image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
+          post :create, user: attributes_for(:user, gender_id: gender.id, lastname: nil, avatar: image)
         end
 
         it "does not save user to database" do
           expect do
-            post :create, user: attributes_for(:user, gender_id: gender.id, lastname: nil)
+            image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
+            post :create, user: attributes_for(:user, gender_id: gender.id, lastname: nil, avatar: image)
           end.to_not change(User, :count)
         end
 
@@ -138,12 +148,14 @@ describe UsersController do
         let (:start_date) { 20.days.ago(Date.today) }
 
         before :each do
-          post :create, { user: attributes_for(:user, gender_id: gender.id), languages: [ {language_id: nil, proficiency_id: proficiency.id, action_id: action.id, start_date: start_date} ] }
+          image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
+          post :create, { user: attributes_for(:user, gender_id: gender.id, avatar: image), languages: [ {language_id: nil, proficiency_id: proficiency.id, action_id: action.id, start_date: start_date} ] }
         end
 
         it "does not save user to database" do
           expect do
-            post :create, { user: attributes_for(:user, gender_id: gender.id), languages: [ {language_id: nil, proficiency_id: proficiency.id, action_id: action.id, start_date: start_date} ] }
+            image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
+            post :create, { user: attributes_for(:user, gender_id: gender.id, avatar: image), languages: [ {language_id: nil, proficiency_id: proficiency.id, action_id: action.id, start_date: start_date} ] }
           end.to_not change(User, :count)
         end
 
@@ -229,7 +241,7 @@ describe UsersController do
       context "can modify email" do
         before :each do
           @new_email = "new@email.com"
-          put :update, user: attributes_for(:user, email: @new_email)
+          put :update, user: attributes_for(:user_without_avatar, email: @new_email)
         end
 
         it "returns HTTP status OK(200)" do
@@ -245,7 +257,7 @@ describe UsersController do
       context "can modify firstname" do
         before :each do
           @firstname = "New-Firstname"
-          put :update, user: attributes_for(:user, firstname: @firstname)
+          put :update, user: attributes_for(:user_without_avatar, firstname: @firstname)
         end
 
         it "returns HTTP status OK(200)" do
@@ -261,7 +273,7 @@ describe UsersController do
       context "can modify lastname" do
         before :each do
           @lastname = "New-Lastname"
-          put :update, user: attributes_for(:user, lastname: @lastname)
+          put :update, user: attributes_for(:user_without_avatar, lastname: @lastname)
         end
 
         it "returns HTTP status OK(200)" do
@@ -277,7 +289,7 @@ describe UsersController do
       context "can modify birthday" do
         before :each do
           @birthday = 100.years.ago(Date.today)
-          put :update, user: attributes_for(:user, birthday: @birthday)
+          put :update, user: attributes_for(:user_without_avatar, birthday: @birthday)
         end
 
         it "returns HTTP status OK(200)" do
@@ -293,7 +305,7 @@ describe UsersController do
       context "can modify gender" do
         before :each do
           @gender = create(:gender, description: Faker::Lorem.word)
-          put :update, user: attributes_for(:user, gender_id: @gender.id)
+          put :update, user: attributes_for(:user_without_avatar, gender_id: @gender.id)
         end
 
         it "returns HTTP status OK(200)" do
@@ -309,7 +321,7 @@ describe UsersController do
       context "can modify about" do
         before :each do
           @about = Faker::Lorem.sentence
-          put :update, user: attributes_for(:user, about: @about)
+          put :update, user: attributes_for(:user_without_avatar, about: @about)
         end
 
         it "returns HTTP status OK(200)" do
@@ -325,7 +337,7 @@ describe UsersController do
       context "cannot modify is_online" do
         it "does not change is_online" do
           expect do
-            put :update, user: attributes_for(:user, is_online: !user.is_online)
+            put :update, user: attributes_for(:user_without_avatar, is_online: !user.is_online)
             user.reload
           end.to_not change(user, :is_online)
         end

@@ -33,5 +33,9 @@ describe User do
     it "is valid without an about" do
       expect(build(:user, about: nil)).to be_valid
     end
+
+    it "saves avatar" do
+      expect(build(:user).avatar_file_name).to eq 'avatar.jpeg'
+    end
   end
 end

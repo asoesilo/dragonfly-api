@@ -8,6 +8,7 @@ namespace :db do
     NUM_DAYS_IN_TEN_YEARS = 3650
     MALE = Gender.find_by(description: "Male")
     FEMALE = Gender.find_by(description: "Female")
+    AVATAR = File.new("#{Rails.root}/spec/fixtures/images/avatar.jpeg")
 
     def get_random_date(days = NUM_DAYS_IN_TEN_YEARS)
       rand(days).days.ago(Date.today)
@@ -47,6 +48,7 @@ namespace :db do
       user.birthday = get_random_date
       user.gender_id = get_random_gender.id
       user.about = Faker::Lorem.paragraph
+      user.avatar = AVATAR
       user.save
 
       6.times do
