@@ -58,9 +58,8 @@ Rails.application.routes.draw do
   resource :profile, controller: :users, only: [:create, :update, :destroy] do
     get 'details'
     get 'matches'
-    get 'friends'
     post 'online'
     post 'offline'
-    resources :friends, controller: :friendships, only: [:create, :destroy]
+    resources :friends, controller: :friendships, only: [:index, :create, :destroy]
   end
 end

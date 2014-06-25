@@ -1,6 +1,9 @@
 class FriendshipsController < ApplicationController
   before_action :validate_parameters, only: [:create, :destroy]
 
+  def index
+  end
+
   def create
     user2 = User.find(params[:id])
 

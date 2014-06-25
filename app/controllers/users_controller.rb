@@ -52,9 +52,6 @@ class UsersController < ApplicationController
   def matches
   end
 
-  def friends
-  end
-
   def online
   end
 
