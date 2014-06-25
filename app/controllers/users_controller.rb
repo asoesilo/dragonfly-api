@@ -72,8 +72,4 @@ class UsersController < ApplicationController
 
   def send_offline_notice
   end
-
-  def update_languages(user)
-    
-  end
 end
