@@ -1,4 +1,11 @@
 module Exceptions
-  class ApplicationError < StandardError; end
+  class ApplicationError < StandardError
+    attr_reader :messages
+    def initialize(messages=[])
+      @messages = messages
+    end
+  end
   class AuthenticationError < ApplicationError; end
+  class InvalidUserError < ApplicationError; end
+  class InvalidUserLanguageError < ApplicationError; end
 end

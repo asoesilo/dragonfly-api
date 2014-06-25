@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:password])
       render json: user, status: :ok
     else
-      raise Exceptions::AuthenticationError.new, 'invalid username/password combination'
+      raise Exceptions::AuthenticationError.new(['invalid username/password combination'])
     end
   end
 

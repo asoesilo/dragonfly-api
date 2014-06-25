@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def application_error_handling(error)
-    render json: { errors: [error.message] }, status: :bad_request
+    render json: { errors: error.messages }, status: :bad_request
   end
 
   def current_user_id

@@ -2,13 +2,29 @@ class UsersController < ApplicationController
   skip_before_action :authenticate_user, only: [:create]
 
   def create
-    user = User.new(user_params)
-    user.is_online = true
-    if user.save
-      render json: user, status: :ok
-    else
-      render json: { errors: user.errors.full_messages }, status: :bad_request
+    User.transaction do
+      @user = User.new(user_params)
+      @user.is_online = true
+
+      if @user.save
+        languages = languages_params
+        if languages["languages"]
+          languages["languages"].each do |language|
+            user.languages.build(
+              language_id: language["language_id"],
+              proficiency_id: language["proficiency_id"],
+              action_id: language["action_id"],
+              start_date: language["start_date"]
+              )
+            raise Exceptions::InvalidUserLanguageError.new(user.errors.full_messages) unless user.save
+          end
+        end
+      else
+        raise Exceptions::InvalidUserError.new(@user.errors.full_messages)
+      end
     end
+    
+    render json: @user, status: :ok
   end
 
   def details
@@ -19,7 +35,7 @@ class UsersController < ApplicationController
     if current_user.update_attributes(user_params)
       head :ok
     else
-      render json: { errors: current_user.errors.full_messages }, status: :bad_request
+      raise Exceptions::InvalidUserError.new(current_user.errors.full_messages)
     end
   end
 
@@ -47,10 +63,17 @@ class UsersController < ApplicationController
 
   private
   def user_params
-    # TODO: add teaching and learning languages association
     params.require(:user).permit(:email, :password, :firstname, :lastname, :birthday, :gender_id, :about)
   end
 
+  def languages_params
+    params.permit(languages: [:language_id, :proficiency_id, :action_id, :start_date])
+  end
+
   def send_offline_notice
+  end
+
+  def update_languages(user)
+    
   end
 end

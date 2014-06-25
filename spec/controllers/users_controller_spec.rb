@@ -5,9 +5,13 @@ describe UsersController do
     context "valid user" do
 
       let (:gender) { create(:gender) }
+      let (:language) { create(:language) }
+      let (:proficiency) { create(:proficiency) }
+      let (:action) { create(:action) }
+      let (:start_date) { 20.days.ago(Date.today) }
 
       before :each do
-        post :create, user: attributes_for(:user, gender_id: gender.id)
+        post :create, { user: attributes_for(:user, gender_id: gender.id), languages: [ {language_id: language.id, proficiency_id: proficiency.id, action_id: action.id, start_date: start_date} ] }
       end
 
       it "save user to database" do
@@ -120,6 +124,32 @@ describe UsersController do
         it "returns error messages" do
           expect(json["errors"].count).to eq 1
           expect(json["errors"][0].downcase).to include("lastname")
+        end
+
+        it "returns HTTP status BAD REQUEST(400)" do
+          expect(response.status).to eq 400
+        end
+      end
+
+      context "invalid language" do
+        let (:gender) { create(:gender) }
+        let (:proficiency) { create(:proficiency) }
+        let (:action) { create(:action) }
+        let (:start_date) { 20.days.ago(Date.today) }
+
+        before :each do
+          post :create, { user: attributes_for(:user, gender_id: gender.id), languages: [ {language_id: nil, proficiency_id: proficiency.id, action_id: action.id, start_date: start_date} ] }
+        end
+
+        it "does not save user to database" do
+          expect do
+            post :create, { user: attributes_for(:user, gender_id: gender.id), languages: [ {language_id: nil, proficiency_id: proficiency.id, action_id: action.id, start_date: start_date} ] }
+          end.to_not change(User, :count)
+        end
+
+        it "returns error messages" do
+          expect(json["errors"].count).to eq 1
+          expect(json["errors"][0].downcase).to include("language")
         end
 
         it "returns HTTP status BAD REQUEST(400)" do
