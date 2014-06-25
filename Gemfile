@@ -35,6 +35,9 @@ gem 'bcrypt', '~> 3.1.7'
 # An email validator for Rails 3 and 4.
 gem 'email_validator'
 
+# Get the environment variables set in .env file (NOTE: should be listed in Gemfile before other gems that use environment variables)
+gem 'dotenv-rails',               group: [:development, :test]
+
 gem 'rack-cors', :require => 'rack/cors'
 
 # Use ActiveModel has_secure_password

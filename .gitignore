@@ -17,3 +17,6 @@
 
 # Ignore all OSX DS_Store files
 .DS_Store
+
+# Ignore env file
+.env
