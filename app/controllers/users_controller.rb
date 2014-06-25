@@ -10,13 +10,13 @@ class UsersController < ApplicationController
         languages = languages_params
         if languages["languages"]
           languages["languages"].each do |language|
-            user.languages.build(
+            @user.languages.build(
               language_id: language["language_id"],
               proficiency_id: language["proficiency_id"],
               action_id: language["action_id"],
               start_date: language["start_date"]
               )
-            raise Exceptions::InvalidUserLanguageError.new(user.errors.full_messages) unless user.save
+            raise Exceptions::InvalidUserLanguageError.new(@user.errors.full_messages) unless @user.save
           end
         end
       else

@@ -61,6 +61,6 @@ Rails.application.routes.draw do
     get 'friends'
     post 'online'
     post 'offline'
-    resources :friends, only: [:new, :destroy]
+    resources :friends, only: [:create, :destroy]
   end
 end

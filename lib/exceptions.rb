@@ -6,6 +6,9 @@ module Exceptions
     end
   end
   class AuthenticationError < ApplicationError; end
+  class InvalidParametersError < ApplicationError; end
   class InvalidUserError < ApplicationError; end
   class InvalidUserLanguageError < ApplicationError; end
+  class InvalidFriendCreationError < ApplicationError; end
+  class InvalidFriendDestroyError < ApplicationError; end
 end
