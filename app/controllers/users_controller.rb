@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   def destroy
     if current_user.destroy
       send_offline_notice
-      log_out
+      #TODO logout
       head :ok
     else
       render json: { errors: current_user.errors.full_messages }, status: :bad_request
