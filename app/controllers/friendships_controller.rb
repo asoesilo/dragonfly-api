@@ -2,6 +2,7 @@ class FriendshipsController < ApplicationController
   before_action :validate_parameters, only: [:create, :destroy]
 
   def index
+    render json: Friendship.get_friends(current_user), status: :ok
   end
 
   def create

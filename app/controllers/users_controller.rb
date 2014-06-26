@@ -50,6 +50,7 @@ class UsersController < ApplicationController
   end
 
   def matches
+    render json: current_user.matches, status: :ok
   end
 
   def online

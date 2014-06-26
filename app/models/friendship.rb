@@ -11,6 +11,13 @@ class Friendship < ActiveRecord::Base
     def find_friendship(user1, user2)
       Friendship.where(["(user1_id = :user_id AND user2_id = :other_user_id) OR (user1_id = :other_user_id AND user2_id = :user_id)", {user_id: user1.id, other_user_id: user2.id}]).first
     end
+
+    def get_friends(user)
+      Friendship.where(["user1_id = :user_id OR user2_id = :user_id", {user_id: user.id}]).inject([]) do |friends, friendship|
+        (friendship.user1 == user) ? friends.push(friendship.user2) : friends.push(friendship.user1)
+        friends
+      end
+    end
   end
 
   private

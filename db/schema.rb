@@ -35,15 +35,11 @@ ActiveRecord::Schema.define(version: 20140625202233) do
     t.string "name"
   end
 
-  create_table "proficiencies", force: true do |t|
-    t.string "name"
-  end
-
   create_table "user_languages", force: true do |t|
     t.integer  "user_id"
     t.integer  "language_id"
-    t.integer  "proficiency_id"
     t.integer  "action_id"
+    t.integer  "proficiency"
     t.date     "start_date"
     t.datetime "created_at"
     t.datetime "updated_at"

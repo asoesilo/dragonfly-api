@@ -14,13 +14,7 @@ languages = LanguageList::COMMON_LANGUAGES.map do |language|
   { id: language_index, name: language.name }
 end
 
-proficiencies = [
-  { id: 1, name: 'Elementary' },
-  { id: 2, name: 'Limited working' },
-  { id: 3, name: 'Pofessional working' },
-  { id: 4, name: 'Full professional' },
-  { id: 5, name: 'Native or bilingual' }
-]
+
 actions = [
   { id: 1, name: 'Teach' },
   { id: 2, name: 'Learn' }
@@ -32,10 +26,6 @@ genders = [
 
 languages.each do |language|
   Language.create(id: language[:id], name: language[:name]) if Language.find_by(id: language[:id]).nil?
-end
-
-proficiencies.each do |proficiency|
-  Proficiency.create(id: proficiency[:id], name: proficiency[:name]) if Proficiency.find_by(id: proficiency[:id]).nil?
 end
 
 actions.each do |action|
