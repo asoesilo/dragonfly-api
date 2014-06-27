@@ -6,13 +6,13 @@ describe UsersController do
 
       let (:gender) { create(:gender) }
       let (:language) { create(:language) }
-      let (:proficiency) { create(:proficiency) }
+      let (:proficiency) { rand(10) + 1 }
       let (:action) { create(:action) }
       let (:start_date) { 20.days.ago(Date.today) }
 
       before :each do
         image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
-        post :create, { user: attributes_for(:user, gender_id: gender.id, avatar: image), languages: [ {language_id: language.id, proficiency_id: proficiency.id, action_id: action.id, start_date: start_date} ] }
+        post :create, { user: attributes_for(:user, gender_id: gender.id, avatar: image), languages: [ {language_id: language.id, proficiency: proficiency, action_id: action.id, start_date: start_date} ] }
       end
 
       it "save user to database" do
@@ -143,19 +143,19 @@ describe UsersController do
 
       context "invalid language" do
         let (:gender) { create(:gender) }
-        let (:proficiency) { create(:proficiency) }
+        let (:proficiency) { rand(10) + 1 }
         let (:action) { create(:action) }
         let (:start_date) { 20.days.ago(Date.today) }
 
         before :each do
           image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
-          post :create, { user: attributes_for(:user, gender_id: gender.id, avatar: image), languages: [ {language_id: nil, proficiency_id: proficiency.id, action_id: action.id, start_date: start_date} ] }
+          post :create, { user: attributes_for(:user, gender_id: gender.id, avatar: image), languages: [ {language_id: nil, proficiency: proficiency, action_id: action.id, start_date: start_date} ] }
         end
 
         it "does not save user to database" do
           expect do
             image = fixture_file_upload("images/avatar.jpeg", "image/jpeg")
-            post :create, { user: attributes_for(:user, gender_id: gender.id, avatar: image), languages: [ {language_id: nil, proficiency_id: proficiency.id, action_id: action.id, start_date: start_date} ] }
+            post :create, { user: attributes_for(:user, gender_id: gender.id, avatar: image), languages: [ {language_id: nil, proficiency: proficiency, action_id: action.id, start_date: start_date} ] }
           end.to_not change(User, :count)
         end
 

@@ -12,7 +12,7 @@ class UsersController < ApplicationController
           languages["languages"].each do |language|
             @user.languages.build(
               language_id: language["language_id"],
-              proficiency_id: language["proficiency_id"],
+              proficiency: language["proficiency"],
               action_id: language["action_id"],
               start_date: language["start_date"]
               )
@@ -65,7 +65,7 @@ class UsersController < ApplicationController
   end
 
   def languages_params
-    params.permit(languages: [:language_id, :proficiency_id, :action_id, :start_date])
+    params.permit(languages: [:language_id, :proficiency, :action_id, :start_date])
   end
 
   def send_offline_notice
