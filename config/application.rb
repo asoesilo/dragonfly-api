@@ -24,7 +24,7 @@ module Api
     # config.i18n.default_locale = :de
     config.middleware.use Rack::Cors do
       allow do
-        origins "#{ENV['CLIENT_PATH']}"
+        origins "*"#"#{ENV['CLIENT_PATH']}"
         resource '*', :headers => :any, :methods => [:get, :post, :delete, :put, :options], :max_age => 1800
       end
     end

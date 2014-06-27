@@ -4,14 +4,14 @@ class User < ActiveRecord::Base
   has_many :user_languages
   has_many :languages, foreign_key: :user_id, class_name: :UserLanguage, dependent: :destroy
 
-  has_attached_file :avatar, styles: {medium: '300x300>', thumb: '100x100>'}
+  #has_attached_file :avatar, styles: {medium: '300x300>', thumb: '100x100>'}
 
   default_value_for :is_online, false
 
   validates :email, presence: true, uniqueness: true, email: true
   validates :firstname, presence: true
   validates :lastname, presence: true
-  validates_attachment :avatar, presence: true, content_type: {content_type: /\Aimage\/.*\Z/}, default_url: "/images/:style/missing.jpeg"
+  #validates_attachment :avatar, presence: true, content_type: {content_type: /\Aimage\/.*\Z/}, default_url: "/images/:style/missing.jpeg"
 
   def languages_to_teach
     languages.where(action: Action.TEACH)

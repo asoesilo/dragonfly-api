@@ -56,7 +56,7 @@ namespace :db do
       user.birthday = get_random_date
       user.gender_id = get_random_gender.id
       user.about = Faker::Lorem.paragraph
-      user.avatar = AVATAR
+      #user.avatar = AVATAR
       user.save
 
       2.times do
