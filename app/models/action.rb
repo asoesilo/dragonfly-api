@@ -10,4 +10,11 @@ class Action < ActiveRecord::Base
       @learn ||= Action.find_by(name: 'Learn')
     end
   end
+
+  def as_json(options)
+    {
+      id: id,
+      name: name
+    }
+  end
 end
