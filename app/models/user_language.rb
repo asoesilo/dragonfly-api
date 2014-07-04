@@ -7,4 +7,13 @@ class UserLanguage < ActiveRecord::Base
   validates :language_id, presence: true
   validates :proficiency, presence: true
   validates :action_id, presence: true
+
+  def as_json(options)
+    {
+      id: id,
+      language: language.as_json(options),
+      proficiency: proficiency,
+      action: action.as_json(options)
+    }
+  end
 end

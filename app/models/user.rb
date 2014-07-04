@@ -51,7 +51,8 @@ class User < ActiveRecord::Base
       birthday: birthday.strftime("%F"),
       gender: gender.description,
       about: about,
-      is_online: is_online
+      is_online: is_online,
+      languages: user_languages.as_json(options)
     }
   end
 end
