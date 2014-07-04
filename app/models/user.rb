@@ -11,7 +11,8 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true, email: true
   validates :firstname, presence: true
   validates :lastname, presence: true
-  #validates_attachment :avatar, presence: true, content_type: {content_type: /\Aimage\/.*\Z/}, default_url: "/images/:style/missing.jpeg"
+
+  #validates_attachment :avatar, content_type: {content_type: /\Aimage\/.*\Z/}, default_url: "/images/:style/missing.jpeg"
 
   def languages_to_teach
     languages.where(action: Action.TEACH)

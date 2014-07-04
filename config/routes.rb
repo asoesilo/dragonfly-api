@@ -62,4 +62,5 @@ Rails.application.routes.draw do
     post 'offline'
     resources :friends, controller: :friendships, only: [:index, :create, :destroy]
   end
+  resources :languages, only: [:index]
 end
