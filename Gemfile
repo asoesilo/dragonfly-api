@@ -42,6 +42,8 @@ gem 'rack-cors', :require => 'rack/cors'
 
 gem 'paperclip', '~> 4.1'
 
+gem 'rails_12factor', group: :production
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -63,3 +65,5 @@ group :development, :test do
   gem 'pry'
   gem 'pry-debugger'
 end
+
+ruby "2.1.1"
